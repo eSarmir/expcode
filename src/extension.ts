@@ -1,10 +1,14 @@
 import * as vscode from 'vscode';
-import { LanguageCount } from './languageCount';
+import { LanguageCount } from './language-count';
+import { CustomDataProvider } from './expcode-data-provider';
 
 export async function activate(context: vscode.ExtensionContext) {
 
 	console.log('Congratulations, your extension "expcode" is now active!');
 	
+	const dataProvider = new CustomDataProvider();
+	vscode.window.registerTreeDataProvider('expcode', dataProvider);
+
 	const languages = await vscode.languages.getLanguages();
 
 	const languageCountes = languages.map((language) => {

@@ -25,7 +25,24 @@
         "command": "expcode.getNumberOfChangesForLanguage",
         "title": "Get Number of Changes for Language"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "expcode",
+          "title": "Expcode",
+          "icon": "resources/package-explorer.svg"
+        }
+      ]
+    },
+    "views": {
+      "expcode": [
+        {
+          "id": "expcode",
+          "name": "Expcode"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
