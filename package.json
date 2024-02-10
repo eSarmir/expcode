@@ -14,16 +14,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "expcode.helloWorld",
-        "title": "Hello World"
+        "command": "expcode.showLanguageOfActiveEditor",
+        "title": "Show language of active editor"
       },
       {
-        "command": "expcode.getLanguageId",
-        "title": "Get Language Id"
-      },
-      {
-        "command": "expcode.getNumberOfChangesForLanguage",
-        "title": "Get Number of Changes for Language"
+        "command": "expcode.showLevelForLanguage",
+        "title": "Show level for language"
       }
     ],
     "viewsContainers": {

@@ -1,23 +1,25 @@
 import * as vscode from 'vscode';
-import { LanguageCount } from './languageCount';
+import { LanguageLevel } from './languageLevel';
 
-export function registerEvents(languageCountes: LanguageCount[]) {
+export function registerEvents(languageCountes: LanguageLevel[]) {
 
-    onDidChangeTextDocument(languageCountes);
+    registerOnDidChangeTextDocument(languageCountes);
 }
 
-function onDidChangeTextDocument(languageCountes: LanguageCount[]) {
+function registerOnDidChangeTextDocument(languageLevels: LanguageLevel[]) {
     vscode.workspace.onDidChangeTextDocument((event) => {
-
-		let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
 	
-		let languageChange = languageCountes.find(
-			(languageCount) => languageCount.language === currentLanguage);
+		let languageLevel = languageLevels.find(
+			(languageLevel) => languageLevel.getLanguageId() === event.document.languageId);
 
-		if (languageChange === undefined) {
+		if (languageLevel === undefined) {
 			return;
 		}
 
-		languageChange.count++;
+		languageLevel.gainExp(event.contentChanges.length);
+
+		vscode.window.showInformationMessage(
+            languageLevel.stringify()
+        );
 	});
 }
