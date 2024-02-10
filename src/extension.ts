@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
-import { LanguageCount } from './language-count';
-import { CustomDataProvider } from './expcode-data-provider';
+import { LanguageCount } from './languageCount';
+import { CustomDataProvider } from './expcodeDataProvider';
+import { registerCommands } from './commands';
 
 export async function activate(context: vscode.ExtensionContext) {
 
@@ -17,7 +18,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	vscode.workspace.onDidChangeTextDocument((event) => {
 
-		let languageChange = getLanguageCount(languageCountes);
+		let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
+	
+		let languageChange = languageCountes.find(
+			(languageCount) => languageCount.language === currentLanguage);
 
 		if (languageChange === undefined) {
 			return;
@@ -26,29 +30,8 @@ export async function activate(context: vscode.ExtensionContext) {
 		languageChange.count++;
 	});
 
-	let getCurrectLanguageDisposable = vscode.commands.registerCommand('expcode.getLanguageId', () => {
-		
-		let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
-
-		vscode.window.showInformationMessage(`Current Language: ${currentLanguage}`);
-	});
-
-	let getNumberOfChangesForLanguageDisposable = vscode.commands.registerCommand('expcode.getNumberOfChangesForLanguage', () => {
-
-		let languageChange = getLanguageCount(languageCountes);
-
-		if (languageChange === undefined) {
-			return;
-		}
-
-		vscode.window.showInformationMessage(
-			`${languageChange.language} changes: ${languageChange.count}`
-		);
-	});
-
 	context.subscriptions.push(
-		getCurrectLanguageDisposable, 
-		getNumberOfChangesForLanguageDisposable
+		...registerCommands(languageCountes)
 	);
 }
 
