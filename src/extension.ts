@@ -35,12 +35,4 @@ export async function activate(context: vscode.ExtensionContext) {
 	);
 }
 
-function getLanguageCount(languageCount: LanguageCount[]) {
-	
-	let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
-	
-	return languageCount.find(
-		(languageChange) => languageChange.language === currentLanguage);
-}
-
 export function deactivate() {}
