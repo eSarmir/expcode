@@ -8,16 +8,18 @@ export function registerEvents(languageCountes: LanguageLevel[]) {
 
 function registerOnDidChangeTextDocument(languageLevels: LanguageLevel[]) {
     vscode.workspace.onDidChangeTextDocument((event) => {
-
-		let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
 	
 		let languageLevel = languageLevels.find(
-			(languageCount) => languageCount.languageId === currentLanguage);
+			(languageLevel) => languageLevel.getLanguageId() === event.document.languageId);
 
 		if (languageLevel === undefined) {
 			return;
 		}
 
-		languageLevel.gainExp(1);
+		languageLevel.gainExp(event.contentChanges.length);
+
+		vscode.window.showInformationMessage(
+            languageLevel.stringify()
+        );
 	});
 }

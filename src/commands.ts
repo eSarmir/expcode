@@ -27,14 +27,14 @@ function showNumberOfChangesForLanguage(languageCountes: LanguageLevel[]) {
         let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
 	
 		let languageLevel = languageCountes.find(
-			(languageCount) => languageCount.languageId === currentLanguage);
+			(languageCount) => languageCount.getLanguageId() === currentLanguage);
 
         if (languageLevel === undefined) {
             return;
         }
 
         vscode.window.showInformationMessage(
-            `${languageLevel.languageId} changes: ${languageLevel.level}`
+            languageLevel.stringify()
         );
     });
 }
