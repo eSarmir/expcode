@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { LanguageCount } from './languageCount';
 import { CustomDataProvider } from './expcodeDataProvider';
 import { registerCommands } from './commands';
+import { registerEvents } from './events';
 
 export async function activate(context: vscode.ExtensionContext) {
 
@@ -16,19 +17,7 @@ export async function activate(context: vscode.ExtensionContext) {
 		return { language: language, count: 0 } as LanguageCount;
 	});
 
-	vscode.workspace.onDidChangeTextDocument((event) => {
-
-		let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
-	
-		let languageChange = languageCountes.find(
-			(languageCount) => languageCount.language === currentLanguage);
-
-		if (languageChange === undefined) {
-			return;
-		}
-
-		languageChange.count++;
-	});
+	registerEvents(languageCountes);
 
 	context.subscriptions.push(
 		...registerCommands(languageCountes)

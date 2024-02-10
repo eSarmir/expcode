@@ -5,15 +5,14 @@ export function registerCommands(languageCountes: LanguageCount[]) {
 
     const disposables: vscode.Disposable[] = [];
 
-    disposables.push(ShowLanguageOfActiveEditor());
+    disposables.push(showLanguageOfActiveEditor());
 
-    disposables.push(ShowNumberOfChangesForLanguage(languageCountes));
+    disposables.push(showNumberOfChangesForLanguage(languageCountes));
 
     return disposables;
 }
 
-function ShowLanguageOfActiveEditor(): vscode.Disposable {
-    
+function showLanguageOfActiveEditor(): vscode.Disposable {
     return vscode.commands.registerCommand('expcode.getLanguageId', () => {
 		
         let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
@@ -22,8 +21,7 @@ function ShowLanguageOfActiveEditor(): vscode.Disposable {
     });
 }
 
-function ShowNumberOfChangesForLanguage(languageCountes: LanguageCount[]) {
-
+function showNumberOfChangesForLanguage(languageCountes: LanguageCount[]) {
     return vscode.commands.registerCommand('expcode.getNumberOfChangesForLanguage', () => {
 
         let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
@@ -40,3 +38,4 @@ function ShowNumberOfChangesForLanguage(languageCountes: LanguageCount[]) {
         );
     });
 }
+
