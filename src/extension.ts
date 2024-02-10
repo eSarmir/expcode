@@ -1,26 +1,59 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { LanguageCount } from './languageCount';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "expcode" is now active!');
+	
+	const languages = await vscode.languages.getLanguages();
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('expcode.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Expcode!');
+	const languageCountes = languages.map((language) => {
+		return { language: language, count: 0 } as LanguageCount;
 	});
 
-	context.subscriptions.push(disposable);
+	vscode.workspace.onDidChangeTextDocument((event) => {
+
+		let languageChange = getLanguageCount(languageCountes);
+
+		if (languageChange === undefined) {
+			return;
+		}
+
+		languageChange.count++;
+	});
+
+	let getCurrectLanguageDisposable = vscode.commands.registerCommand('expcode.getLanguageId', () => {
+		
+		let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
+
+		vscode.window.showInformationMessage(`Current Language: ${currentLanguage}`);
+	});
+
+	let getNumberOfChangesForLanguageDisposable = vscode.commands.registerCommand('expcode.getNumberOfChangesForLanguage', () => {
+
+		let languageChange = getLanguageCount(languageCountes);
+
+		if (languageChange === undefined) {
+			return;
+		}
+
+		vscode.window.showInformationMessage(
+			`${languageChange.language} changes: ${languageChange.count}`
+		);
+	});
+
+	context.subscriptions.push(
+		getCurrectLanguageDisposable, 
+		getNumberOfChangesForLanguageDisposable
+	);
 }
 
-// This method is called when your extension is deactivated
+function getLanguageCount(languageCount: LanguageCount[]) {
+	
+	let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
+	
+	return languageCount.find(
+		(languageChange) => languageChange.language === currentLanguage);
+}
+
 export function deactivate() {}

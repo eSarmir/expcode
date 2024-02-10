@@ -16,6 +16,14 @@
       {
         "command": "expcode.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "expcode.getLanguageId",
+        "title": "Get Language Id"
+      },
+      {
+        "command": "expcode.getNumberOfChangesForLanguage",
+        "title": "Get Number of Changes for Language"
       }
     ]
   },
