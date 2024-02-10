@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
-import { LanguageCount } from './languageCount';
+import { LanguageLevel } from './languageLevel';
 
-export function registerCommands(languageCountes: LanguageCount[]) {
+export function registerCommands(languageCountes: LanguageLevel[]) {
 
     const disposables: vscode.Disposable[] = [];
 
@@ -13,7 +13,7 @@ export function registerCommands(languageCountes: LanguageCount[]) {
 }
 
 function showLanguageOfActiveEditor(): vscode.Disposable {
-    return vscode.commands.registerCommand('expcode.getLanguageId', () => {
+    return vscode.commands.registerCommand('expcode.showLanguageOfActiveEditor', () => {
 		
         let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
 
@@ -21,20 +21,20 @@ function showLanguageOfActiveEditor(): vscode.Disposable {
     });
 }
 
-function showNumberOfChangesForLanguage(languageCountes: LanguageCount[]) {
-    return vscode.commands.registerCommand('expcode.getNumberOfChangesForLanguage', () => {
+function showNumberOfChangesForLanguage(languageCountes: LanguageLevel[]) {
+    return vscode.commands.registerCommand('expcode.showLevelForLanguage', () => {
 
         let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
 	
-		let languageChange = languageCountes.find(
-			(languageCount) => languageCount.language === currentLanguage);
+		let languageLevel = languageCountes.find(
+			(languageCount) => languageCount.languageId === currentLanguage);
 
-        if (languageChange === undefined) {
+        if (languageLevel === undefined) {
             return;
         }
 
         vscode.window.showInformationMessage(
-            `${languageChange.language} changes: ${languageChange.count}`
+            `${languageLevel.languageId} changes: ${languageLevel.level}`
         );
     });
 }

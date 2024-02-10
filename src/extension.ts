@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { LanguageCount } from './languageCount';
+import { LanguageLevel } from './languageLevel';
 import { ExpcodeDataProvider } from './expcodeDataProvider';
 import { registerCommands } from './commands';
 import { registerEvents } from './events';
@@ -13,14 +13,14 @@ export async function activate(context: vscode.ExtensionContext) {
 
 	const languages = await vscode.languages.getLanguages();
 
-	const languageCountes = languages.map((language) => {
-		return { language: language, count: 0 } as LanguageCount;
+	const languageLevels = languages.map((language) => {
+		return new LanguageLevel(language);
 	});
 
-	registerEvents(languageCountes);
+	registerEvents(languageLevels);
 
 	context.subscriptions.push(
-		...registerCommands(languageCountes)
+		...registerCommands(languageLevels)
 	);
 }
 
