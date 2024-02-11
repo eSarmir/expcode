@@ -1,25 +1,41 @@
 import * as vscode from 'vscode';
 import { LanguageLevel } from './languageLevel';
+import { updateLanguageLevels } from './extensionState';
 
-export function registerEvents(languageCountes: LanguageLevel[]) {
-
-    registerOnDidChangeTextDocument(languageCountes);
+export function registerEvents(
+	context: vscode.ExtensionContext,
+	languageLevels: LanguageLevel[]
+	) {
+    registerOnDidChangeTextDocument(languageLevels);
+	registerOnDidSaveTextDocument(context, languageLevels);
 }
 
 function registerOnDidChangeTextDocument(languageLevels: LanguageLevel[]) {
     vscode.workspace.onDidChangeTextDocument((event) => {
 	
-		let languageLevel = languageLevels.find(
+		let toUpdate = languageLevels.find(
 			(languageLevel) => languageLevel.getLanguageId() === event.document.languageId);
 
-		if (languageLevel === undefined) {
-			return;
+		if (toUpdate === undefined) {
+			toUpdate = new LanguageLevel(event.document.languageId);
+			languageLevels.push(toUpdate);
 		}
-
-		languageLevel.gainExp(event.contentChanges.length);
+		
+		toUpdate.gainExp(event.contentChanges.length);
 
 		vscode.window.showInformationMessage(
-            languageLevel.stringify()
+            toUpdate!.stringify()
+        );
+	});
+}
+
+function registerOnDidSaveTextDocument(context: vscode.ExtensionContext, languageLevels: LanguageLevel[]) {
+	vscode.workspace.onDidSaveTextDocument((event) => {
+	
+		updateLanguageLevels(context, languageLevels);
+
+		vscode.window.showInformationMessage(
+			`Language levels saved`
         );
 	});
 }
