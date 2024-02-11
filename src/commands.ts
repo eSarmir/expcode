@@ -1,5 +1,9 @@
 import * as vscode from 'vscode';
 import { LanguageLevel } from './languageLevel';
+import { 
+    ShowLanguageOfActiveEditorCommand, 
+    ShowLevelForLanguageCommand 
+} from './constants';
 
 export function registerCommands(languageLevels: LanguageLevel[]) {
 
@@ -13,7 +17,7 @@ export function registerCommands(languageLevels: LanguageLevel[]) {
 }
 
 function showLanguageOfActiveEditor(): vscode.Disposable {
-    return vscode.commands.registerCommand('expcode.showLanguageOfActiveEditor', () => {
+    return vscode.commands.registerCommand(ShowLanguageOfActiveEditorCommand, () => {
 		
         let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
 
@@ -22,7 +26,7 @@ function showLanguageOfActiveEditor(): vscode.Disposable {
 }
 
 function showNumberOfChangesForLanguage(languageLevels: LanguageLevel[]) {
-    return vscode.commands.registerCommand('expcode.showLevelForLanguage', () => {
+    return vscode.commands.registerCommand(ShowLevelForLanguageCommand, () => {
 
         let currentLanguage = vscode.window.activeTextEditor?.document.languageId;
 	
