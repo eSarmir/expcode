@@ -1,10 +1,29 @@
 import * as vscode from 'vscode';
-import { LanguageLevel } from './languageLevel';
+import { LanguageLevel, StorableLanguageLevel } from './languageLevel';
 
 export function getLanguageLevels(context: vscode.ExtensionContext): LanguageLevel[] {
-    return context.globalState.get<LanguageLevel[]>(`expcode-languageLevels`, []);
+    var languageLevels = context.globalState.get<StorableLanguageLevel[]>(`expcode-languageLevels`, [] as StorableLanguageLevel[]);
+
+    return languageLevels.map((languageLevel) => {
+        return new LanguageLevel(
+            languageLevel.languageId, 
+            languageLevel.level,
+            languageLevel.experience,
+            languageLevel.expToNextLevel
+            );
+    });
 }
 
 export function updateLanguageLevels(context: vscode.ExtensionContext, languageLevels: LanguageLevel[]) {
-    context.globalState.update(`expcode-languageLevels`, languageLevels);
+    
+    let languageLevelsToStore = languageLevels.map((languageLevel) => {
+        return {
+            languageId: languageLevel.getLanguageId(),
+            level: languageLevel.getLevel(),
+            experience: languageLevel.getExperience(),
+            expToNextLevel: languageLevel.getExpToNextLevel()
+        } as StorableLanguageLevel;
+    });
+    
+    context.globalState.update(`expcode-languageLevels`, languageLevelsToStore);
 }
