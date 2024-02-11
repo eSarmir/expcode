@@ -1,3 +1,10 @@
+export interface StorableLanguageLevel {
+    languageId: string;
+    level: number;
+    experience: number;
+    expToNextLevel: number;
+}
+
 export class LanguageLevel {
 
     private languageId: string;
@@ -5,23 +12,32 @@ export class LanguageLevel {
     private experience: number;
     private expToNextLevel: number;
 
-    constructor(languageId: string) {
+    constructor(
+        languageId: string,
+        level?: number, 
+        experience?: number,
+        expToNextLevel?: number) {
+    
         this.languageId = languageId;
-        this.level = 1;
-        this.experience = 0;
-        this.expToNextLevel = this.calculateExpToNextLevel(this.level);
+        this.level = level || 1;
+        this.experience = experience || 0;
+        this.expToNextLevel = expToNextLevel || this.calculateExpToNextLevel(this.level);
     }
 
-    public getLanguageId() { 
+    public getLanguageId(): string { 
         return this.languageId; 
     }
 
-    public getLevel() { 
+    public getLevel(): number { 
         return this.level; 
     }
 
-    public getExperience() { 
+    public getExperience(): number { 
         return this.experience; 
+    }
+
+    public getExpToNextLevel(): number { 
+        return this.expToNextLevel; 
     }
 
     public gainExp(exp: number) {
