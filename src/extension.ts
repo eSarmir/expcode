@@ -3,8 +3,6 @@ import { registerCommands } from './commands';
 import { registerEvents } from './events';
 import { getLanguageLevels } from './extensionState';
 import { ExpcodeDataProvider } from './expcodeDataProvider';
-import { LanguageLevel } from './languageLevel';
-import { get } from 'http';
 
 export async function activate(context: vscode.ExtensionContext) {
 
