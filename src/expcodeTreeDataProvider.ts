@@ -13,15 +13,15 @@ export class ExpcodeTreeDataProvider implements vscode.TreeDataProvider<vscode.T
         return element;
     }
 
-    getChildren(element?: vscode.TreeItem): Thenable<vscode.TreeItem[]> {
+    getChildren(element?: LanguageTreeItem): Thenable<vscode.TreeItem[]> {
         if (element) {
-            return Promise.resolve([]);
+            return Promise.resolve(element.children);
         } else {
             return Promise.resolve(
                 this.LanguageLevels.map(level => {
                     return new LanguageTreeItem(
                         level,
-                        vscode.TreeItemCollapsibleState.None
+                        vscode.TreeItemCollapsibleState.Expanded
                     );
                 })
             );
@@ -30,18 +30,28 @@ export class ExpcodeTreeDataProvider implements vscode.TreeDataProvider<vscode.T
 }
 
 class LanguageTreeItem extends vscode.TreeItem {
-    
+
+    public readonly children: vscode.TreeItem[];
 
     constructor(
         public readonly LanguageLevel: LanguageLevel,
-        public readonly collapsibleState: vscode.TreeItemCollapsibleState
+        public readonly collapsibleState: vscode.TreeItemCollapsibleState,
     ) {
         super(LanguageLevel.getLanguageId(), collapsibleState);
 
-        this.description = `Level: ${this.LanguageLevel.getLevel()} Progress: ${this.getProgress()}`;
+        this.description = `Progress: ${LanguageLevel.calculateProgress()}%`;
+        this.children = this.populateChildrenElements();
+    }
+
+    populateChildrenElements(): vscode.TreeItem[] {
+        return [
+            new vscode.TreeItem('Level: ' + this.LanguageLevel.getLevel()),
+            new vscode.TreeItem('Experience: ' + this.LanguageLevel.getExperience()),
+            new vscode.TreeItem('Experience to next level: ' + this.LanguageLevel.getNextLevelExpTreshold())
+        ];
     }
 
     getProgress(): string {
-        return `${this.LanguageLevel.getExperience()} / ${this.LanguageLevel.getExpToNextLevel()}`;    
+        return `${this.LanguageLevel.getExperience()} / ${this.LanguageLevel.getNextLevelExpTreshold()}`;    
     }
 }

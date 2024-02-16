@@ -10,7 +10,10 @@ export class LanguageLevel {
     private languageId: string;
     private level: number;
     private experience: number;
-    private expToNextLevel: number;
+    private nextLevelExpTreshold: number;
+
+    private readonly defaultLevel = 1;
+    private readonly defaultExperience = 0;
 
     constructor(
         languageId: string,
@@ -19,9 +22,9 @@ export class LanguageLevel {
         expToNextLevel?: number) {
     
         this.languageId = languageId;
-        this.level = level || 1;
-        this.experience = experience || 0;
-        this.expToNextLevel = expToNextLevel || this.calculateExpToNextLevel(this.level);
+        this.level = level || this.defaultLevel;
+        this.experience = experience || this.defaultExperience;
+        this.nextLevelExpTreshold = this.calculateExpToNextLevel(this.level);
     }
 
     public getLanguageId(): string { 
@@ -36,27 +39,31 @@ export class LanguageLevel {
         return this.experience; 
     }
 
-    public getExpToNextLevel(): number { 
-        return this.expToNextLevel; 
+    public getNextLevelExpTreshold(): number {
+        return this.nextLevelExpTreshold;
     }
 
     public gainExp(exp: number) {
         
         this.experience += exp;
 
-        if (this.experience >= this.expToNextLevel) {
+        if (this.experience >= this.nextLevelExpTreshold) {
             this.levelUp();   
         }
     }
 
     private levelUp() {
         this.level++;
-        this.experience = this.experience - this.expToNextLevel;
-        this.expToNextLevel = this.calculateExpToNextLevel(this.level);
+        this.experience = this.experience - this.nextLevelExpTreshold;
+        this.nextLevelExpTreshold = this.calculateExpToNextLevel(this.level);
     }
 
     private calculateExpToNextLevel(currentLevel: number) {
         return currentLevel * 100;
+    }
+
+    public calculateProgress(): number {
+        return this.experience / this.nextLevelExpTreshold * 100;
     }
 
     public stringify(): string {
