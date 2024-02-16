@@ -26,11 +26,13 @@ function registerOnDidChangeTextDocument(languageLevels: LanguageLevel[]) {
 			languageLevels.push(toUpdate);
 		}
 		
-		toUpdate.gainExp(event.contentChanges.length);
+		var hasLeveledUp = toUpdate.gainExp(event.contentChanges.length);
 
-		vscode.window.showInformationMessage(
-            toUpdate!.stringify()
-        );
+		if (hasLeveledUp) {
+			vscode.window.showInformationMessage(
+				`Congratulations! You have reached level ${toUpdate.getLevel()} in ${toUpdate.getLanguageId()}!`
+			);
+		}
 	});
 }
 

@@ -43,13 +43,16 @@ export class LanguageLevel {
         return this.nextLevelExpTreshold;
     }
 
-    public gainExp(exp: number) {
+    public gainExp(exp: number): boolean {
         
         this.experience += exp;
 
         if (this.experience >= this.nextLevelExpTreshold) {
             this.levelUp();   
+            return true;
         }
+
+        return false;
     }
 
     private levelUp() {
