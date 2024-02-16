@@ -24,7 +24,7 @@ export function updateLanguageLevels(context: vscode.ExtensionContext, languageL
             languageId: languageLevel.getLanguageId(),
             level: languageLevel.getLevel(),
             experience: languageLevel.getExperience(),
-            expToNextLevel: languageLevel.getExpToNextLevel()
+            expToNextLevel: languageLevel.getNextLevelExpTreshold()
         } as StorableLanguageLevel;
     });
     

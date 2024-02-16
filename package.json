@@ -25,16 +25,16 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "expcode",
+          "id": "expcode-view-container",
           "title": "Expcode",
           "icon": "resources/package-explorer.svg"
         }
       ]
     },
     "views": {
-      "expcode": [
+      "expcode-view-container": [
         {
-          "id": "expcode",
+          "id": "expcode-view-container",
           "name": "Expcode"
         }
       ]
