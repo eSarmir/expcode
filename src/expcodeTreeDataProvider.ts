@@ -3,6 +3,10 @@ import { LanguageLevel } from './languageLevel';
 
 export class ExpcodeTreeDataProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
 
+    private _onDidChangeTreeData: vscode.EventEmitter<LanguageTreeItem | undefined> 
+        = new vscode.EventEmitter<LanguageTreeItem | undefined>();
+    readonly onDidChangeTreeData: vscode.Event<LanguageTreeItem | undefined> = this._onDidChangeTreeData.event;
+
     private readonly LanguageLevels: LanguageLevel[];
 
     constructor(languageLevels: LanguageLevel[]) {
@@ -27,6 +31,10 @@ export class ExpcodeTreeDataProvider implements vscode.TreeDataProvider<vscode.T
             );
         }
     }
+
+    refresh(): void {
+        this._onDidChangeTreeData.fire(undefined);
+    }
 }
 
 class LanguageTreeItem extends vscode.TreeItem {
@@ -39,7 +47,7 @@ class LanguageTreeItem extends vscode.TreeItem {
     ) {
         super(LanguageLevel.getLanguageId(), collapsibleState);
 
-        this.description = `Progress: ${LanguageLevel.calculateProgress()}%`;
+        this.description = `Progress: ${Math.round(LanguageLevel.calculateProgress())}%`;
         this.children = this.populateChildrenElements();
     }
 

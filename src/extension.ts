@@ -10,13 +10,16 @@ export async function activate(context: vscode.ExtensionContext) {
 	const languageLevels = getLanguageLevels(context);
 	
 	const dataProvider = new ExpcodeTreeDataProvider(languageLevels);
-	
+
 	vscode.window.registerTreeDataProvider(
-		ExpcodeViewContainerId, 
+		ExpcodeViewContainerId,
 		dataProvider
 	);
 
-	registerEvents(context, languageLevels);
+	registerEvents(
+		context, 
+		languageLevels, 
+		dataProvider.refresh.bind(dataProvider));
 
 	context.subscriptions.push(
 		...registerCommands(languageLevels)
