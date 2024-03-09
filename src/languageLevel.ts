@@ -2,7 +2,6 @@ export interface StorableLanguageLevel {
     languageId: string;
     level: number;
     experience: number;
-    expToNextLevel: number;
 }
 
 export class LanguageLevel {
