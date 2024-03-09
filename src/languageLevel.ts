@@ -18,8 +18,7 @@ export class LanguageLevel {
     constructor(
         languageId: string,
         level?: number, 
-        experience?: number,
-        expToNextLevel?: number) {
+        experience?: number) {
     
         this.languageId = languageId;
         this.level = level || this.defaultLevel;
