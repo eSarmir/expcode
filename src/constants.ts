@@ -6,4 +6,4 @@ export const ExpcodeViewContainerId = 'expcode-view-container';
 
 // Commands
 export const ShowLanguageOfActiveEditorCommand = 'expcode.showLanguageOfActiveEditor';
-export const ShowLevelForLanguageCommand = 'expcode.showLanguageOfActiveEditor';
+export const ShowLevelForLanguageCommand = 'expcode.showLevelForLanguage';
