@@ -12,7 +12,6 @@ export function getLanguageLevels(context: vscode.ExtensionContext): LanguageLev
             languageLevel.languageId, 
             languageLevel.level,
             languageLevel.experience,
-            languageLevel.expToNextLevel
             );
     });
 }
@@ -24,7 +23,6 @@ export function updateLanguageLevels(context: vscode.ExtensionContext, languageL
             languageId: languageLevel.getLanguageId(),
             level: languageLevel.getLevel(),
             experience: languageLevel.getExperience(),
-            expToNextLevel: languageLevel.getNextLevelExpTreshold()
         } as StorableLanguageLevel;
     });
     
