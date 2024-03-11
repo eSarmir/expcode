@@ -6,7 +6,7 @@ export function registerEvents(
 	context: vscode.ExtensionContext,
 	languageLevels: LanguageLevel[],
 	treeViewDataRefreshCallback: () => void
-	) {;
+	) {
     registerOnDidChangeTextDocument(languageLevels);
 	registerOnDidSaveTextDocument(
 		context, 
@@ -39,8 +39,8 @@ function registerOnDidChangeTextDocument(languageLevels: LanguageLevel[]) {
 function registerOnDidSaveTextDocument(
 	context: vscode.ExtensionContext, 
 	languageLevels: LanguageLevel[],
-	treeViewDataRefreshCallback: () => void) 
-	{
+	treeViewDataRefreshCallback: () => void) {
+		
 	vscode.workspace.onDidSaveTextDocument((event) => {
 	
 		updateLanguageLevels(context, languageLevels);
@@ -49,6 +49,6 @@ function registerOnDidSaveTextDocument(
 
 		vscode.window.showInformationMessage(
 			`Language levels saved`
-        );
+		);
 	});
 }
