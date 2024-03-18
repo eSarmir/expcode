@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 import { LanguageLevel } from './languageLevel';
+import path from 'path';
+import * as fs from 'fs';
 
 export class ExpcodeTreeDataProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
 
@@ -49,6 +51,17 @@ class LanguageTreeItem extends vscode.TreeItem {
 
         this.description = `Progress: ${Math.round(LanguageLevel.calculateProgress())}%`;
         this.children = this.populateChildrenElements();
+
+        var iconPath = vscode.Uri.file(path.join(__dirname, '..', 'resources', `${LanguageLevel.getLanguageId()}.svg`));
+
+        if (!fs.existsSync(iconPath.fsPath)) {
+            iconPath = vscode.Uri.file(path.join(__dirname, '..', 'resources', 'default.svg'));
+        }
+
+        this.iconPath = {
+            light: iconPath,
+            dark: iconPath
+        };
     }
 
     populateChildrenElements(): vscode.TreeItem[] {
@@ -62,4 +75,6 @@ class LanguageTreeItem extends vscode.TreeItem {
     getProgress(): string {
         return `${this.LanguageLevel.getExperience()} / ${this.LanguageLevel.getNextLevelExpTreshold()}`;    
     }
+
+    
 }
