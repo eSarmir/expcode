@@ -47,7 +47,7 @@
         "expcode.showLanguageLevelUpNotification": {
           "type": "boolean",
           "default": true,
-          "description": "Show language level up norification"
+          "description": "Show language level up notification"
         }
       }
     }
