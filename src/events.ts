@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { LanguageLevel } from './languageLevel';
 import { updateLanguageLevels } from './extensionState';
+import { showLanguageLevelUpNotification } from './notifications';
 
 export function registerEvents(
 	context: vscode.ExtensionContext,
@@ -29,9 +30,7 @@ function registerOnDidChangeTextDocument(languageLevels: LanguageLevel[]) {
 		var hasLeveledUp = toUpdate.gainExp(event.contentChanges.length);
 
 		if (hasLeveledUp) {
-			vscode.window.showInformationMessage(
-				`Congratulations! You have reached level ${toUpdate.getLevel()} in ${toUpdate.getLanguageId()}!`
-			);
+			showLanguageLevelUpNotification(toUpdate);
 		}
 	});
 }
@@ -41,14 +40,10 @@ function registerOnDidSaveTextDocument(
 	languageLevels: LanguageLevel[],
 	treeViewDataRefreshCallback: () => void) {
 		
-	vscode.workspace.onDidSaveTextDocument((event) => {
+	vscode.workspace.onDidSaveTextDocument(() => {
 	
 		updateLanguageLevels(context, languageLevels);
 
 		treeViewDataRefreshCallback();
-
-		vscode.window.showInformationMessage(
-			`Language levels saved`
-		);
 	});
 }
