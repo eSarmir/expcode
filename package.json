@@ -40,6 +40,16 @@
           "name": "Expcode"
         }
       ]
+    },
+    "configuration": {
+      "title": "Expcode",
+      "properties": {
+        "expcode.showLanguageLevelUpNotification": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show language level up norification"
+        }
+      }
     }
   },
   "scripts": {
