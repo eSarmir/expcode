@@ -1,6 +1,5 @@
 import * as assert from 'assert';
 import { LanguageLevel } from '../languageLevel';
-import exp from 'constants';
 
 suite('LanguageLevel Test Suite', () => {
     
