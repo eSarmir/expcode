@@ -1,6 +1,6 @@
 export interface TextDocumentChange {
     text: string;
-    receivedAt: Date;
+    receivedAt: number;
 }
 
 export class TextDocumentChangeStack {

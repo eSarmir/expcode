@@ -10,7 +10,7 @@ suite('TextDocumentChangeStack Test Suite', () => {
         
         const changeEvent: TextDocumentChange = {
             text: 'a',
-            receivedAt: new Date()
+            receivedAt: Date.now()
         };
 
         // act
@@ -30,7 +30,7 @@ suite('TextDocumentChangeStack Test Suite', () => {
         for (let i = 0; i < 11; i++) {
             const changeEvent: TextDocumentChange = {
                 text: i.toString(),
-                receivedAt: new Date()
+                receivedAt: Date.now()
             };
 
             stack.push(changeEvent);
