@@ -41,4 +41,22 @@ suite('TextDocumentChangeStack Test Suite', () => {
         assert.strictEqual(stack.getItems[0].text, '1');
         assert.strictEqual(stack.getItems[9].text, '10');
     });
+
+    test('Clear stack', () => {
+        // arrange
+        const stack = new TextDocumentChangeStack();
+
+        const changeEvent: TextDocumentChange = {
+            text: 'a',
+            receivedAt: Date.now()
+        };
+
+        stack.push(changeEvent);
+        
+        // act
+        stack.clear();
+
+        // assert
+        assert.strictEqual(stack.getItems.length, 0);
+    });
 });

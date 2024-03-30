@@ -11,6 +11,10 @@ export class TextDocumentChangeStack {
         return this.stack;
     }
 
+    public clear() {
+        this.stack = [];
+    }
+
     public push(event: TextDocumentChange) {
         if (this.stackIsFull()) {
             this.removeFirstEvent();
