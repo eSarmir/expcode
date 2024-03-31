@@ -17,9 +17,11 @@ suite('TextDocumentChangeStack Test Suite', () => {
         stack.push(changeEvent);
 
         // assert
-        assert.strictEqual(stack.getItems.length, 1);
-        assert.strictEqual(stack.getItems[0].text, changeEvent.text);
-        assert.strictEqual(stack.getItems[0].receivedAt, changeEvent.receivedAt);
+        const firstItem = stack.getItemAt(0);
+
+        assert.strictEqual(stack.count, 1);
+        assert.strictEqual(firstItem.text, changeEvent.text);
+        assert.strictEqual(firstItem.receivedAt, changeEvent.receivedAt);
     });
 
     test('Reaching max events in stack should remove the first one', () => {
@@ -37,9 +39,12 @@ suite('TextDocumentChangeStack Test Suite', () => {
         }
 
         // assert
-        assert.strictEqual(stack.getItems.length, 10);
-        assert.strictEqual(stack.getItems[0].text, '1');
-        assert.strictEqual(stack.getItems[9].text, '10');
+        const firstItem = stack.getItemAt(0);
+        const lastItem = stack.getItemAt(9);
+
+        assert.strictEqual(stack.count, 10);
+        assert.strictEqual(firstItem.text, '1');
+        assert.strictEqual(lastItem.text, '10');
     });
 
     test('Clear stack', () => {
@@ -57,6 +62,6 @@ suite('TextDocumentChangeStack Test Suite', () => {
         stack.clear();
 
         // assert
-        assert.strictEqual(stack.getItems.length, 0);
+        assert.strictEqual(stack.count, 0);
     });
 });
