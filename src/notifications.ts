@@ -8,5 +8,11 @@ export function showLanguageLevelUpNotification(toUpdate: LanguageLevel) {
         vscode.window.showInformationMessage(
             `Congratulations! You have reached level ${toUpdate.getLevel()} in ${toUpdate.getLanguageId()}!`
         );
-    }
-}
+    };
+};
+
+export function showGainedExperienceDebugNotification(experience: number) {
+    vscode.window.showInformationMessage(
+        `Gained exp: ${experience}`
+    );
+};
