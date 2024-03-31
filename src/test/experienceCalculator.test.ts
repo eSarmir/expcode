@@ -123,7 +123,7 @@ suite('Experience Calculator Test Suite', () => {
 
         const documentChange2: TextDocumentChange = {
             text: 'b',
-            receivedAt: 1000
+            receivedAt: 500
         };
 
         const expected = 1;
@@ -136,7 +136,7 @@ suite('Experience Calculator Test Suite', () => {
         assert.strictEqual(actual, expected);
     });
 
-    test('Should gain two exp for one letter after three changes in less than 1 second', () => {
+    test('Should gain two exp for one letter after four changes', () => {
         // Arrange
         const experienceCalculator = new ExperienceCalculator();
 
@@ -147,12 +147,17 @@ suite('Experience Calculator Test Suite', () => {
 
         const documentChange2: TextDocumentChange = {
             text: 'b',
-            receivedAt: 1000
+            receivedAt: 500
         };
 
         const documentChange3: TextDocumentChange = {
             text: 'c',
-            receivedAt: 2000
+            receivedAt: 1000
+        };
+
+        const documentChange4: TextDocumentChange = {
+            text: 'd',
+            receivedAt: 1500
         };
 
         const expected = 2;
@@ -160,7 +165,8 @@ suite('Experience Calculator Test Suite', () => {
         // Act
         experienceCalculator.calculate(documentChange1);
         experienceCalculator.calculate(documentChange2);
-        const actual = experienceCalculator.calculate(documentChange3);
+        experienceCalculator.calculate(documentChange3);
+        const actual = experienceCalculator.calculate(documentChange4);
 
         // Assert
         assert.strictEqual(actual, expected);
@@ -177,12 +183,17 @@ suite('Experience Calculator Test Suite', () => {
         
         const documentChange2: TextDocumentChange = {
             text: 'b',
-            receivedAt: 1000
+            receivedAt: 500
         };
         
         const documentChange3: TextDocumentChange = {
             text: 'c',
-            receivedAt: 2001
+            receivedAt: 1000
+        };
+
+        const exceedsComboTime: TextDocumentChange = {
+            text: 'd',
+            receivedAt: 1501
         };
         
         const expected = 1;
@@ -190,13 +201,14 @@ suite('Experience Calculator Test Suite', () => {
         // Act
         experienceCalculator.calculate(documentChange1);
         experienceCalculator.calculate(documentChange2);
-        const actual = experienceCalculator.calculate(documentChange3);
+        experienceCalculator.calculate(documentChange3);
+        const actual = experienceCalculator.calculate(exceedsComboTime);
         
         // Assert
         assert.strictEqual(actual, expected);
     });
     
-    test('Should gain three exp for one letter after four changes in less than 1 second', () => {
+    test('Should gain three exp for one letter after five changes', () => {
         // Arrange
         const experienceCalculator = new ExperienceCalculator();
         
@@ -207,17 +219,22 @@ suite('Experience Calculator Test Suite', () => {
         
         const documentChange2: TextDocumentChange = {
             text: 'b',
-            receivedAt: 1000
+            receivedAt: 500
         };
         
         const documentChange3: TextDocumentChange = {
             text: 'c',
-            receivedAt: 2000
+            receivedAt: 1000
         };
         
         const documentChange4: TextDocumentChange = {
             text: 'd',
-            receivedAt: 3000
+            receivedAt: 1500
+        };
+
+        const documentChange5: TextDocumentChange = {
+            text: 'e',
+            receivedAt: 2000
         };
         
         const expected = 3;
@@ -226,7 +243,8 @@ suite('Experience Calculator Test Suite', () => {
         experienceCalculator.calculate(documentChange1);
         experienceCalculator.calculate(documentChange2);
         experienceCalculator.calculate(documentChange3);
-        const actual = experienceCalculator.calculate(documentChange4);
+        experienceCalculator.calculate(documentChange4);
+        const actual = experienceCalculator.calculate(documentChange5);
         
         // Assert
         assert.strictEqual(actual, expected);
@@ -243,12 +261,17 @@ suite('Experience Calculator Test Suite', () => {
         
         const documentChange2: TextDocumentChange = {
             text: 'cd',
-            receivedAt: 1000
+            receivedAt: 500
         };
         
         const documentChange3: TextDocumentChange = {
-            text: 'cd',
-            receivedAt: 2000
+            text: 'ef',
+            receivedAt: 1000
+        };
+
+        const documentChange4: TextDocumentChange = {
+            text: 'gh',
+            receivedAt: 1500
         };
 
         const expected = 4;
@@ -256,7 +279,8 @@ suite('Experience Calculator Test Suite', () => {
         // Act
         experienceCalculator.calculate(documentChange1);
         experienceCalculator.calculate(documentChange2);
-        const actual = experienceCalculator.calculate(documentChange3);
+        experienceCalculator.calculate(documentChange3);
+        const actual = experienceCalculator.calculate(documentChange4);
         
         // Assert
         assert.strictEqual(actual, expected);
@@ -273,12 +297,17 @@ suite('Experience Calculator Test Suite', () => {
         
         const documentChange2: TextDocumentChange = {
             text: 'def',
-            receivedAt: 1000
+            receivedAt: 500
         };
         
         const documentChange3: TextDocumentChange = {
             text: 'ghi',
-            receivedAt: 2000
+            receivedAt: 1000
+        };
+
+        const documentChange4: TextDocumentChange = {
+            text: 'jkl',
+            receivedAt: 1500
         };
 
         const expected = 4;
@@ -286,7 +315,108 @@ suite('Experience Calculator Test Suite', () => {
         // Act
         experienceCalculator.calculate(documentChange1);
         experienceCalculator.calculate(documentChange2);
-        const actual = experienceCalculator.calculate(documentChange3);
+        experienceCalculator.calculate(documentChange3);
+        const actual = experienceCalculator.calculate(documentChange4);
+        
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
+    test('Should gain 7 exp for one letter after 9 changes', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+        
+        for (let i = 1; i <= 8; i++) {
+            experienceCalculator.calculate({
+                text: 'a',
+                receivedAt: i * 500
+            });
+        }
+        
+        const ninthChange: TextDocumentChange = {
+            text: 'a',
+            receivedAt: 4500
+        };
+
+        const expected = 7;
+        
+        // Act
+        const actual = experienceCalculator.calculate(ninthChange);
+        
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
+    test('Should gain 8 exp for one letter after 10 changes (max combo)', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+        
+        for (let i = 1; i <= 9; i++) {
+            experienceCalculator.calculate({
+                text: 'a',
+                receivedAt: i * 500
+            });
+        }
+        
+        const tenthChange: TextDocumentChange = {
+            text: 'a',
+            receivedAt: 5000
+        };
+
+        const expected = 8;
+        
+        // Act
+        const actual = experienceCalculator.calculate(tenthChange);
+        
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
+    test('Should gain 8 exp for one letter after 11 changes', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+        
+        for (let i = 1; i <= 10; i++) {
+            experienceCalculator.calculate({
+                text: 'a',
+                receivedAt: i * 500
+            });
+        }
+        
+        const eleventhChange: TextDocumentChange = {
+            text: 'a',
+            receivedAt: 5500
+        };
+
+        const expected = 8;
+        
+        // Act
+        const actual = experienceCalculator.calculate(eleventhChange);
+        
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
+    test('Should gain 16 exp for multiple letters on max combo', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+        
+        for (let i = 1; i <= 9; i++) {
+            experienceCalculator.calculate({
+                text: 'abc',
+                receivedAt: i * 500
+            });
+        }
+        
+        const tenthChange: TextDocumentChange = {
+            text: 'abcdefgh',
+            receivedAt: 5000
+        };
+
+        const expected = 16;
+        
+        // Act
+        const actual = experienceCalculator.calculate(tenthChange);
         
         // Assert
         assert.strictEqual(actual, expected);

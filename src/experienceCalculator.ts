@@ -2,9 +2,8 @@ import { TextDocumentChange, TextDocumentChangeStack } from "./textDocumentChang
 
 export class ExperienceCalculator {
     private readonly textDocumentChangeStack: TextDocumentChangeStack = new TextDocumentChangeStack();
-    private readonly maxTimeBetweenChangesMs: number = 1000;
+    private readonly maxTimeBetweenChangesMs: number = 500;
     private readonly stackSizeToStartCombo: number = 3;
-    private multiplier: number = 1;
 
     private readonly singleCharacterExperience: number = 1;
     private readonly multiCharacterExperience: number = 2;
@@ -13,17 +12,21 @@ export class ExperienceCalculator {
 
         if (this.exceedsMaxTimeBetweenChanges(documentChange)) {
             this.textDocumentChangeStack.clear();
-            this.multiplier = 1;
         }
         else {
             this.textDocumentChangeStack.push(documentChange);
         }
 
-        if (this.textDocumentChangeStack.count >= this.stackSizeToStartCombo) {
-            ++this.multiplier;
+        return this.getBaseExperience(documentChange.text) * this.getMultiplier();
+    }
+
+    private getMultiplier() {
+        if (this.textDocumentChangeStack.count <= this.stackSizeToStartCombo) {
+            return 1;
         }
 
-        return this.getBaseExperience(documentChange.text) * this.multiplier;
+        // Max multiplier is 8 (depends on the maxStackSize which is 10)
+        return 1 + this.textDocumentChangeStack.count - this.stackSizeToStartCombo;
     }
 
     private exceedsMaxTimeBetweenChanges(documentChange: TextDocumentChange): boolean {
