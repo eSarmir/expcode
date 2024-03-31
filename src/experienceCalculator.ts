@@ -1,9 +1,13 @@
 import { TextDocumentChange, TextDocumentChangeStack } from "./textDocumentChange";
 
 export class ExperienceCalculator {
-    private textDocumentChangeStack: TextDocumentChangeStack = new TextDocumentChangeStack();
+    private readonly textDocumentChangeStack: TextDocumentChangeStack = new TextDocumentChangeStack();
     private readonly maxTimeBetweenChangesMs: number = 1000;
+    private readonly stackSizeToStartCombo: number = 3;
     private multiplier: number = 1;
+
+    private readonly singleCharacterExperience: number = 1;
+    private readonly multiCharacterExperience: number = 2;
 
     public calculate(documentChange: TextDocumentChange): number {
 
@@ -15,7 +19,7 @@ export class ExperienceCalculator {
             this.textDocumentChangeStack.push(documentChange);
         }
 
-        if (this.textDocumentChangeStack.count >= 3) {
+        if (this.textDocumentChangeStack.count >= this.stackSizeToStartCombo) {
             ++this.multiplier;
         }
 
@@ -36,8 +40,15 @@ export class ExperienceCalculator {
     }
 
     private getBaseExperience(text: string): number {
+
+        text = text.trim();
+
+        if (text.length === 0) {
+            return 0;
+        }
+
         return text.length > 1 
-            ? 2
-            : text.length;
+            ? this.multiCharacterExperience
+            : this.singleCharacterExperience;
     }
 }

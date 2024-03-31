@@ -40,6 +40,42 @@ suite('Experience Calculator Test Suite', () => {
         assert.strictEqual(actual, expected);
     });
 
+    test('Should gain zero exp for single whitespace character', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+
+        const documentChange: TextDocumentChange = {
+            text: ' ',
+            receivedAt: Date.now()
+        };
+
+        const expected = 0;
+        
+        // Act
+        const actual = experienceCalculator.calculate(documentChange);
+
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
+    test('Should gain zero exp for multiple whitespace characters', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+
+        const documentChange: TextDocumentChange = {
+            text: '     ',
+            receivedAt: Date.now()
+        };
+
+        const expected = 0;
+        
+        // Act
+        const actual = experienceCalculator.calculate(documentChange);
+
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
     test('Should gain two exp for two letters', () => {
         // Arrange
         const experienceCalculator = new ExperienceCalculator();
