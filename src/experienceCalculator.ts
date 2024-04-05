@@ -6,7 +6,7 @@ export class ExperienceCalculator {
     private readonly stackSizeToStartCombo: number = 3;
 
     private readonly singleCharacterExperience: number = 1;
-    private readonly multiCharacterExperience: number = 2;
+    private readonly MaxMultiCharacterExperience: number = 10;
 
     public calculate(documentChange: TextDocumentChange): number {
 
@@ -51,7 +51,14 @@ export class ExperienceCalculator {
         }
 
         return text.length > 1 
-            ? this.multiCharacterExperience
+            ? this.getExperienceForMultiCharacter(text)
             : this.singleCharacterExperience;
+    }
+
+    private getExperienceForMultiCharacter(text: string): number {
+        return Math.min(
+            this.singleCharacterExperience + Math.ceil(text.length / 10),
+            this.MaxMultiCharacterExperience
+        );
     }
 }
