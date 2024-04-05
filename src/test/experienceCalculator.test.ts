@@ -94,7 +94,7 @@ suite('Experience Calculator Test Suite', () => {
         assert.strictEqual(actual, expected);
     });
 
-    test('Should gain two exp for more then 2 letters', () => {
+    test('Should gain two exp for 3 letters', () => {
         // Arrange
         const experienceCalculator = new ExperienceCalculator();
 
@@ -104,6 +104,60 @@ suite('Experience Calculator Test Suite', () => {
         };
 
         const expected = 2;
+        
+        // Act
+        const actual = experienceCalculator.calculate(documentChange);
+
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
+    test('Should gain three exp for 11 letters', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+
+        const documentChange: TextDocumentChange = {
+            text: 'abcdefghijk',
+            receivedAt: Date.now()
+        };
+
+        const expected = 3;
+        
+        // Act
+        const actual = experienceCalculator.calculate(documentChange);
+
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
+    test('Should gain ten exp for 91 letters', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+
+        const documentChange: TextDocumentChange = {
+            text: 'abcdefghij'.repeat(9) + 'a',
+            receivedAt: Date.now()
+        };
+
+        const expected = 10;
+        
+        // Act
+        const actual = experienceCalculator.calculate(documentChange);
+
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
+    test('Should gain ten exp for 101 letters', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+
+        const documentChange: TextDocumentChange = {
+            text: 'abcdefghij'.repeat(10) + 'a',
+            receivedAt: Date.now()
+        };
+
+        const expected = 10;
         
         // Act
         const actual = experienceCalculator.calculate(documentChange);
@@ -420,5 +474,5 @@ suite('Experience Calculator Test Suite', () => {
         
         // Assert
         assert.strictEqual(actual, expected);
-    });
+    }); 
 });
