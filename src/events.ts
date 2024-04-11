@@ -1,14 +1,19 @@
 import * as vscode from 'vscode';
 import { LanguageLevel } from './languageLevel';
 import { updateLanguageLevels } from './extensionState';
-import { showLanguageLevelUpNotification } from './notifications';
+import { showGainedExperienceDebugNotification, showLanguageLevelUpNotification } from './notifications';
+import { ExperienceCalculator } from './experienceCalculator';
+import { TextDocumentChange } from './textDocumentChange';
 
 export function registerEvents(
 	context: vscode.ExtensionContext,
 	languageLevels: LanguageLevel[],
+	experienceCalculator: ExperienceCalculator,
 	treeViewDataRefreshCallback: () => void
 	) {
-    registerOnDidChangeTextDocument(languageLevels);
+    registerOnDidChangeTextDocument(
+		languageLevels,
+		experienceCalculator);
 	registerOnDidSaveTextDocument(
 		context, 
 		languageLevels, 
@@ -16,7 +21,10 @@ export function registerEvents(
 	);
 }
 
-function registerOnDidChangeTextDocument(languageLevels: LanguageLevel[]) {
+function registerOnDidChangeTextDocument(
+	languageLevels: LanguageLevel[],
+	experienceCalculator: ExperienceCalculator) {
+
     vscode.workspace.onDidChangeTextDocument((event) => {
 	
 		let toUpdate = languageLevels.find(
@@ -26,8 +34,15 @@ function registerOnDidChangeTextDocument(languageLevels: LanguageLevel[]) {
 			toUpdate = new LanguageLevel(event.document.languageId);
 			languageLevels.push(toUpdate);
 		}
-		
-		var hasLeveledUp = toUpdate.gainExp(event.contentChanges.length);
+
+		const documentChange: TextDocumentChange = {
+			text: event.contentChanges[0].text,
+			receivedAt: Date.now()
+		};
+
+		var experienceToGain = experienceCalculator.calculate(documentChange);
+
+		var hasLeveledUp = toUpdate.gainExp(experienceToGain);
 
 		if (hasLeveledUp) {
 			showLanguageLevelUpNotification(toUpdate);

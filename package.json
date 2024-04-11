@@ -22,6 +22,10 @@
       {
         "command": "expcode.showLevelForLanguage",
         "title": "Show level for language"
+      },
+      {
+        "command": "expcode.resetProgress",
+        "title": "Reset expcode progress"
       }
     ],
     "viewsContainers": {
