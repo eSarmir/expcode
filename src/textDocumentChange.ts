@@ -3,7 +3,7 @@ export interface TextDocumentChange {
     receivedAt: number;
 }
 
-export class TextDocumentChangeStack {
+export class ComboStack {
     private stack: TextDocumentChange[] = [];
     private readonly maxStackSize: number = 10;
 

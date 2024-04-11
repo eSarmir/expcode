@@ -1,12 +1,12 @@
 import * as assert from 'assert';
 import { TextDocumentChange } from '../textDocumentChange';
-import { TextDocumentChangeStack } from '../textDocumentChange';
+import { ComboStack } from '../textDocumentChange';
 
 suite('TextDocumentChangeStack Test Suite', () => {
 
     test('Add event to empty stack', () => {
         // arrange
-        const stack = new TextDocumentChangeStack();
+        const stack = new ComboStack();
         
         const changeEvent: TextDocumentChange = {
             text: 'a',
@@ -26,7 +26,7 @@ suite('TextDocumentChangeStack Test Suite', () => {
 
     test('Reaching max events in stack should remove the first one', () => {
         // arrange
-        const stack = new TextDocumentChangeStack();
+        const stack = new ComboStack();
 
         // act
         for (let i = 0; i < 11; i++) {
@@ -49,7 +49,7 @@ suite('TextDocumentChangeStack Test Suite', () => {
 
     test('Clear stack', () => {
         // arrange
-        const stack = new TextDocumentChangeStack();
+        const stack = new ComboStack();
 
         const changeEvent: TextDocumentChange = {
             text: 'a',

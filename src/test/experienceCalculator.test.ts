@@ -4,6 +4,8 @@ import { ExperienceCalculator } from '../experienceCalculator';
 
 suite('Experience Calculator Test Suite', () => {
     
+    const maxTimeBetweenChangesMs: number = 3000;
+
     test('Should gain one exp for one letter', () => {
         // Arrange
         const experienceCalculator = new ExperienceCalculator();
@@ -130,7 +132,7 @@ suite('Experience Calculator Test Suite', () => {
         assert.strictEqual(actual, expected);
     });
 
-    test('Should gain ten exp for 91 letters', () => {
+    test('Should gain eleven exp for 91 letters', () => {
         // Arrange
         const experienceCalculator = new ExperienceCalculator();
 
@@ -139,7 +141,7 @@ suite('Experience Calculator Test Suite', () => {
             receivedAt: Date.now()
         };
 
-        const expected = 10;
+        const expected = 11;
         
         // Act
         const actual = experienceCalculator.calculate(documentChange);
@@ -148,7 +150,7 @@ suite('Experience Calculator Test Suite', () => {
         assert.strictEqual(actual, expected);
     });
 
-    test('Should gain ten exp for 101 letters', () => {
+    test('Should gain twelve exp for 101 letters', () => {
         // Arrange
         const experienceCalculator = new ExperienceCalculator();
 
@@ -157,7 +159,7 @@ suite('Experience Calculator Test Suite', () => {
             receivedAt: Date.now()
         };
 
-        const expected = 10;
+        const expected = 12;
         
         // Act
         const actual = experienceCalculator.calculate(documentChange);
@@ -190,289 +192,265 @@ suite('Experience Calculator Test Suite', () => {
         assert.strictEqual(actual, expected);
     });
 
-    test('Should gain two exp for one letter after four changes', () => {
+    test('Should gain one exp for one letter after first combo stack', () => {
         // Arrange
         const experienceCalculator = new ExperienceCalculator();
 
-        const documentChange1: TextDocumentChange = {
-            text: 'a',
+        const firstComboStack: TextDocumentChange = {
+            text: 'aa',
             receivedAt: 0
         };
 
         const documentChange2: TextDocumentChange = {
             text: 'b',
-            receivedAt: 500
+            receivedAt: maxTimeBetweenChangesMs
+        };
+
+        const expected = 1;
+        
+        // Act
+        experienceCalculator.calculate(firstComboStack);
+        const actual = experienceCalculator.calculate(documentChange2);
+
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
+    // Should gain two exp for two letters after second combo stack
+    test('Should gain two exp for one letter after second combo stack', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+
+        const firstComboStack: TextDocumentChange = {
+            text: 'aa',
+            receivedAt: 0
+        };
+
+        const secondComboStack: TextDocumentChange = {
+            text: 'bb',
+            receivedAt: maxTimeBetweenChangesMs
         };
 
         const documentChange3: TextDocumentChange = {
             text: 'c',
-            receivedAt: 1000
-        };
-
-        const documentChange4: TextDocumentChange = {
-            text: 'd',
-            receivedAt: 1500
+            receivedAt: maxTimeBetweenChangesMs * 2
         };
 
         const expected = 2;
         
         // Act
-        experienceCalculator.calculate(documentChange1);
-        experienceCalculator.calculate(documentChange2);
-        experienceCalculator.calculate(documentChange3);
-        const actual = experienceCalculator.calculate(documentChange4);
+        experienceCalculator.calculate(firstComboStack);
+        experienceCalculator.calculate(secondComboStack);
+        const actual = experienceCalculator.calculate(documentChange3);
 
         // Assert
         assert.strictEqual(actual, expected);
     });
 
-    test('Should gain one exp after multiplier reset', () => {
+    // Should gain three exp for one letter after third combo stack
+    test('Should gain three exp for one letter after third combo stack', () => {
         // Arrange
         const experienceCalculator = new ExperienceCalculator();
-        
-        const documentChange1: TextDocumentChange = {
-            text: 'a',
+
+        const firstComboStack: TextDocumentChange = {
+            text: 'aa',
             receivedAt: 0
-        };
-        
-        const documentChange2: TextDocumentChange = {
-            text: 'b',
-            receivedAt: 500
-        };
-        
-        const documentChange3: TextDocumentChange = {
-            text: 'c',
-            receivedAt: 1000
         };
 
-        const exceedsComboTime: TextDocumentChange = {
-            text: 'd',
-            receivedAt: 1501
+        const secondComboStack: TextDocumentChange = {
+            text: 'bb',
+            receivedAt: maxTimeBetweenChangesMs
         };
-        
-        const expected = 1;
-        
-        // Act
-        experienceCalculator.calculate(documentChange1);
-        experienceCalculator.calculate(documentChange2);
-        experienceCalculator.calculate(documentChange3);
-        const actual = experienceCalculator.calculate(exceedsComboTime);
-        
-        // Assert
-        assert.strictEqual(actual, expected);
-    });
-    
-    test('Should gain three exp for one letter after five changes', () => {
-        // Arrange
-        const experienceCalculator = new ExperienceCalculator();
-        
-        const documentChange1: TextDocumentChange = {
-            text: 'a',
-            receivedAt: 0
+
+        const thirdComboStack: TextDocumentChange = {
+            text: 'cc',
+            receivedAt: maxTimeBetweenChangesMs * 2
         };
-        
-        const documentChange2: TextDocumentChange = {
-            text: 'b',
-            receivedAt: 500
-        };
-        
-        const documentChange3: TextDocumentChange = {
-            text: 'c',
-            receivedAt: 1000
-        };
-        
+
         const documentChange4: TextDocumentChange = {
             text: 'd',
-            receivedAt: 1500
+            receivedAt: maxTimeBetweenChangesMs * 3
         };
 
-        const documentChange5: TextDocumentChange = {
-            text: 'e',
-            receivedAt: 2000
-        };
-        
         const expected = 3;
         
         // Act
-        experienceCalculator.calculate(documentChange1);
-        experienceCalculator.calculate(documentChange2);
-        experienceCalculator.calculate(documentChange3);
-        experienceCalculator.calculate(documentChange4);
-        const actual = experienceCalculator.calculate(documentChange5);
-        
+        experienceCalculator.calculate(firstComboStack);
+        experienceCalculator.calculate(secondComboStack);
+        experienceCalculator.calculate(thirdComboStack);
+        const actual = experienceCalculator.calculate(documentChange4);
+
         // Assert
         assert.strictEqual(actual, expected);
     });
 
-    test('Should gain four exp for two letter text change combo', () => {
+    // Should gain ten exp for one letter after tenth stack 
+    test('Should gain ten exp for one letter after tenth stack', () => {
         // Arrange
         const experienceCalculator = new ExperienceCalculator();
+
+        for (let i = 0; i < 10; i++) {
+            const comboStackChange: TextDocumentChange = {
+                text: 'aa',
+                receivedAt: maxTimeBetweenChangesMs * i
+            };    
+
+            experienceCalculator.calculate(comboStackChange);
+        }
         
-        const documentChange1: TextDocumentChange = {
-            text: 'ab',
+        const documentChange: TextDocumentChange = {
+            text: 'a',
+            receivedAt: maxTimeBetweenChangesMs * 10
+        };
+
+        const expected = 10;
+        
+        // Act
+        const actual = experienceCalculator.calculate(documentChange);
+
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
+    // Should gain ten exp for one letter after eleventh stack (max combo)
+    test('Should gain ten exp for one letter after eleventh stack (max combo)', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+
+        for (let i = 0; i < 11; i++) {
+            const comboStackChange: TextDocumentChange = {
+                text: 'aa',
+                receivedAt: maxTimeBetweenChangesMs * i
+            };    
+
+            experienceCalculator.calculate(comboStackChange);
+        }
+        
+        const documentChange: TextDocumentChange = {
+            text: 'a',
+            receivedAt: maxTimeBetweenChangesMs * 11
+        };
+
+        const expected = 10;
+        
+        // Act
+        const actual = experienceCalculator.calculate(documentChange);
+
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
+    // Should gain 10 exp for 100 letters after first stack
+    test('Should gain 22 exp for 100 letters for second stack', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+
+        const comboStackChange: TextDocumentChange = {
+            text: 'a'.repeat(100),
             receivedAt: 0
         };
-        
-        const documentChange2: TextDocumentChange = {
-            text: 'cd',
-            receivedAt: 500
-        };
-        
-        const documentChange3: TextDocumentChange = {
-            text: 'ef',
-            receivedAt: 1000
+
+        const documentChange: TextDocumentChange = {
+            text: 'a'.repeat(100),
+            receivedAt: maxTimeBetweenChangesMs
         };
 
-        const documentChange4: TextDocumentChange = {
-            text: 'gh',
-            receivedAt: 1500
-        };
-
-        const expected = 4;
+        const expected = 22;
         
         // Act
-        experienceCalculator.calculate(documentChange1);
-        experienceCalculator.calculate(documentChange2);
-        experienceCalculator.calculate(documentChange3);
-        const actual = experienceCalculator.calculate(documentChange4);
-        
+        experienceCalculator.calculate(comboStackChange);
+        const actual = experienceCalculator.calculate(documentChange);
+
         // Assert
         assert.strictEqual(actual, expected);
     });
 
-    test('Should gain four exp for more than two letter text change combo', () => {
+    // Should gain 10 exp for 100 letters after second stack
+    test('Should gain 33 exp for 100 letters for third stack', () => {
         // Arrange
         const experienceCalculator = new ExperienceCalculator();
-        
-        const documentChange1: TextDocumentChange = {
-            text: 'abc',
+
+        const firstComboStack: TextDocumentChange = {
+            text: 'a'.repeat(100),
             receivedAt: 0
         };
-        
-        const documentChange2: TextDocumentChange = {
-            text: 'def',
-            receivedAt: 500
+
+        const secondComboStack: TextDocumentChange = {
+            text: 'a'.repeat(100),
+            receivedAt: maxTimeBetweenChangesMs
         };
+
+        const documentChange: TextDocumentChange = {
+            text: 'a'.repeat(100),
+            receivedAt: maxTimeBetweenChangesMs * 2
+        };
+
+        const expected = 33;
         
+        // Act
+        experienceCalculator.calculate(firstComboStack);
+        experienceCalculator.calculate(secondComboStack);
+        const actual = experienceCalculator.calculate(documentChange);
+
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
+    // Should gain 100 exp for 100 letters after tenth stack
+    test('Should gain 110 exp for 100 letters after tenth stack', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+
+        for (let i = 0; i < 10; i++) {
+            const comboStackChange: TextDocumentChange = {
+                text: 'a'.repeat(100),
+                receivedAt: maxTimeBetweenChangesMs * i
+            };    
+
+            experienceCalculator.calculate(comboStackChange);
+        }
+        
+        const documentChange: TextDocumentChange = {
+            text: 'a'.repeat(100),
+            receivedAt: maxTimeBetweenChangesMs * 10
+        };
+
+        const expected = 110;
+        
+        // Act
+        const actual = experienceCalculator.calculate(documentChange);
+
+        // Assert
+        assert.strictEqual(actual, expected);
+    });
+
+    test('Should gain one exp after reseting two change combo', () => {
+        // Arrange
+        const experienceCalculator = new ExperienceCalculator();
+
+        const firstComboStack: TextDocumentChange = {
+            text: 'aa',
+            receivedAt: 0
+        };
+
+        const secondComboStack: TextDocumentChange = {
+            text: 'bb',
+            receivedAt: maxTimeBetweenChangesMs
+        };
+
         const documentChange3: TextDocumentChange = {
-            text: 'ghi',
-            receivedAt: 1000
+            text: 'c',
+            receivedAt: maxTimeBetweenChangesMs * 5
         };
 
-        const documentChange4: TextDocumentChange = {
-            text: 'jkl',
-            receivedAt: 1500
-        };
-
-        const expected = 4;
+        const expected = 1;
         
         // Act
-        experienceCalculator.calculate(documentChange1);
-        experienceCalculator.calculate(documentChange2);
-        experienceCalculator.calculate(documentChange3);
-        const actual = experienceCalculator.calculate(documentChange4);
-        
+        experienceCalculator.calculate(firstComboStack);
+        experienceCalculator.calculate(secondComboStack);
+        const actual = experienceCalculator.calculate(documentChange3);
+
         // Assert
         assert.strictEqual(actual, expected);
     });
-
-    test('Should gain 7 exp for one letter after 9 changes', () => {
-        // Arrange
-        const experienceCalculator = new ExperienceCalculator();
-        
-        for (let i = 1; i <= 8; i++) {
-            experienceCalculator.calculate({
-                text: 'a',
-                receivedAt: i * 500
-            });
-        }
-        
-        const ninthChange: TextDocumentChange = {
-            text: 'a',
-            receivedAt: 4500
-        };
-
-        const expected = 7;
-        
-        // Act
-        const actual = experienceCalculator.calculate(ninthChange);
-        
-        // Assert
-        assert.strictEqual(actual, expected);
-    });
-
-    test('Should gain 8 exp for one letter after 10 changes (max combo)', () => {
-        // Arrange
-        const experienceCalculator = new ExperienceCalculator();
-        
-        for (let i = 1; i <= 9; i++) {
-            experienceCalculator.calculate({
-                text: 'a',
-                receivedAt: i * 500
-            });
-        }
-        
-        const tenthChange: TextDocumentChange = {
-            text: 'a',
-            receivedAt: 5000
-        };
-
-        const expected = 8;
-        
-        // Act
-        const actual = experienceCalculator.calculate(tenthChange);
-        
-        // Assert
-        assert.strictEqual(actual, expected);
-    });
-
-    test('Should gain 8 exp for one letter after 11 changes', () => {
-        // Arrange
-        const experienceCalculator = new ExperienceCalculator();
-        
-        for (let i = 1; i <= 10; i++) {
-            experienceCalculator.calculate({
-                text: 'a',
-                receivedAt: i * 500
-            });
-        }
-        
-        const eleventhChange: TextDocumentChange = {
-            text: 'a',
-            receivedAt: 5500
-        };
-
-        const expected = 8;
-        
-        // Act
-        const actual = experienceCalculator.calculate(eleventhChange);
-        
-        // Assert
-        assert.strictEqual(actual, expected);
-    });
-
-    test('Should gain 16 exp for multiple letters on max combo', () => {
-        // Arrange
-        const experienceCalculator = new ExperienceCalculator();
-        
-        for (let i = 1; i <= 9; i++) {
-            experienceCalculator.calculate({
-                text: 'abc',
-                receivedAt: i * 500
-            });
-        }
-        
-        const tenthChange: TextDocumentChange = {
-            text: 'abcdefgh',
-            receivedAt: 5000
-        };
-
-        const expected = 16;
-        
-        // Act
-        const actual = experienceCalculator.calculate(tenthChange);
-        
-        // Assert
-        assert.strictEqual(actual, expected);
-    }); 
 });
