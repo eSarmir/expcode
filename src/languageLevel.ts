@@ -14,6 +14,8 @@ export class LanguageLevel {
     private readonly defaultLevel = 1;
     private readonly defaultExperience = 0;
 
+    private readonly expPerLevel = 256;
+
     constructor(
         languageId: string,
         level?: number, 
@@ -60,7 +62,7 @@ export class LanguageLevel {
     }
 
     private calculateExpToNextLevel(currentLevel: number) {
-        return currentLevel * 100;
+        return currentLevel * 256;
     }
 
     public calculateProgress(): number {
