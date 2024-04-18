@@ -1,3 +1,5 @@
+import { ExpToLevelUp } from "./constants";
+
 export interface StorableLanguageLevel {
     languageId: string;
     level: number;
@@ -13,8 +15,6 @@ export class LanguageLevel {
 
     private readonly defaultLevel = 1;
     private readonly defaultExperience = 0;
-
-    private readonly expPerLevel = 256;
 
     constructor(
         languageId: string,
@@ -62,7 +62,7 @@ export class LanguageLevel {
     }
 
     private calculateExpToNextLevel(currentLevel: number) {
-        return currentLevel * 256;
+        return currentLevel * ExpToLevelUp;
     }
 
     public calculateProgress(): number {

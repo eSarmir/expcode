@@ -1,5 +1,6 @@
 import * as assert from 'assert';
 import { LanguageLevel } from '../languageLevel';
+import { ExpToLevelUp } from '../constants';
 
 suite('LanguageLevel Test Suite', () => {
     
@@ -14,7 +15,7 @@ suite('LanguageLevel Test Suite', () => {
         assert.strictEqual(languageLevel.getLanguageId(), languageId);
         assert.strictEqual(languageLevel.getLevel(), 1);
         assert.strictEqual(languageLevel.getExperience(), 0);
-        assert.strictEqual(languageLevel.getNextLevelExpTreshold(), 100);
+        assert.strictEqual(languageLevel.getNextLevelExpTreshold(), ExpToLevelUp);
     });
 
     test('Created LanguageLevel should have the given values', () => {
@@ -30,7 +31,7 @@ suite('LanguageLevel Test Suite', () => {
         assert.strictEqual(languageLevel.getLanguageId(), languageId);
         assert.strictEqual(languageLevel.getLevel(), level);
         assert.strictEqual(languageLevel.getExperience(), experience);
-        assert.strictEqual(languageLevel.getNextLevelExpTreshold(), 200);
+        assert.strictEqual(languageLevel.getNextLevelExpTreshold(), ExpToLevelUp * level);
     });
 
     test('Gained experience should be added', () => {
@@ -55,8 +56,8 @@ suite('LanguageLevel Test Suite', () => {
         // arrange
         const languageId = 'javascript';
         const level = 1;
-        const experience = 90;
-        const gainExpAmount = 10;
+        const experience = 0;
+        const gainExpAmount = ExpToLevelUp;
         
         var languageLevel = new LanguageLevel(languageId, level, experience);
         
@@ -66,15 +67,15 @@ suite('LanguageLevel Test Suite', () => {
         // assert
         assert.strictEqual(languageLevel.getLevel(), 2);
         assert.strictEqual(languageLevel.getExperience(), 0);
-        assert.strictEqual(languageLevel.getNextLevelExpTreshold(), 200);
+        assert.strictEqual(languageLevel.getNextLevelExpTreshold(), ExpToLevelUp * (level + 1));
     });
 
     test('Reaching exp treshold should level up and keep the rest of the exp', () => {
         // arrange
         const languageId = 'javascript';
         const level = 1;
-        const experience = 90;
-        const gainExpAmount = 20;
+        const experience = 0;
+        const gainExpAmount = ExpToLevelUp + 50;
         
         var languageLevel = new LanguageLevel(languageId, level, experience);
         
@@ -83,8 +84,8 @@ suite('LanguageLevel Test Suite', () => {
 
         // assert
         assert.strictEqual(languageLevel.getLevel(), 2);
-        assert.strictEqual(languageLevel.getExperience(), 10);
-        assert.strictEqual(languageLevel.getNextLevelExpTreshold(), 200);
+        assert.strictEqual(languageLevel.getExperience(), 50);
+        assert.strictEqual(languageLevel.getNextLevelExpTreshold(), ExpToLevelUp * (level + 1));
     });
 
     test('Should correctly calculate the progress', () => {
@@ -93,7 +94,7 @@ suite('LanguageLevel Test Suite', () => {
         const level = 1;
         const experience = 23;
         
-        const expectedProgressPercentage = 23;
+        const expectedProgressPercentage = (experience / (ExpToLevelUp * level)) * 100;
 
         var languageLevel = new LanguageLevel(languageId, level, experience);
         
