@@ -19,16 +19,20 @@ export async function activate(context: vscode.ExtensionContext) {
 		dataProvider
 	);
 
+	const refreshTreeViewCallback = dataProvider.refresh.bind(dataProvider);
+
 	registerEvents(
 		context, 
 		languageLevels,
-		experienceCalculator, 
-		dataProvider.refresh.bind(dataProvider));
+		experienceCalculator,
+		refreshTreeViewCallback
+		);
 
 	context.subscriptions.push(
 		...registerCommands(
 			languageLevels,
-			context)
+			context,
+			refreshTreeViewCallback)
 	);
 }
 

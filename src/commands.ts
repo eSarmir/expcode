@@ -1,29 +1,29 @@
 import * as vscode from 'vscode';
 import { LanguageLevel } from './languageLevel';
-import { 
-    ResetProgressCommand,
-    ShowLanguageOfActiveEditorCommand, 
-    ShowLevelForLanguageCommand 
-} from './constants';
-import { resetLanguageLevels } from './extensionState';
+import { ResetProgressCommand } from './constants';
+import { deleteStoredLanguageLevels } from './extensionState';
+import { LanguageLevels } from './languageLevels';
 
 export function registerCommands(
-    languageLevels: LanguageLevel[],
-    context: vscode.ExtensionContext) {
+    languageLevels: LanguageLevels,
+    context: vscode.ExtensionContext,
+    treeViewDataRefreshCallback: () => void) {
 
     const disposables: vscode.Disposable[] = [];
 
-    disposables.push(resetProgress(context, languageLevels));
+    disposables.push(resetProgress(context, languageLevels, treeViewDataRefreshCallback));
 
     return disposables;
 }
 
 function resetProgress(
     context: vscode.ExtensionContext,
-    languageLevels: LanguageLevel[]) {
+    languageLevels: LanguageLevels,
+    treeViewDataRefreshCallback: () => void) {
 
     return vscode.commands.registerCommand(ResetProgressCommand, () => {
-        languageLevels = [];
-        resetLanguageLevels(context);
+        languageLevels.resetLanguageLevels();
+        deleteStoredLanguageLevels(context);
+        treeViewDataRefreshCallback();
     });
 };

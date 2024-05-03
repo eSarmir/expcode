@@ -1,20 +1,18 @@
 import * as vscode from 'vscode';
 import { LanguageLevel } from './languageLevel';
 import { updateLanguageLevels } from './extensionState';
-import { showGainedExperienceDebugNotification, showLanguageLevelUpNotification } from './notifications';
+import { showLanguageLevelUpNotification } from './notifications';
 import { ExperienceCalculator } from './experienceCalculator';
 import { TextDocumentChange } from './textDocumentChange';
+import { LanguageLevels } from './languageLevels';
 
 export function registerEvents(
 	context: vscode.ExtensionContext,
-	languageLevels: LanguageLevel[],
+	languageLevels: LanguageLevels,
 	experienceCalculator: ExperienceCalculator,
 	treeViewDataRefreshCallback: () => void) {
 
-	const overallLevel = languageLevels.find((languageLevel) => languageLevel.getLanguageId() === 'overall')!;
-
 	registerOnDidChangeTextDocument(	
-		overallLevel,
 		languageLevels,
 		experienceCalculator);
 
@@ -26,18 +24,16 @@ export function registerEvents(
 }
 
 function registerOnDidChangeTextDocument(
-	overallLevel: LanguageLevel,
-	languageLevels: LanguageLevel[],
+	languageLevels: LanguageLevels,
 	experienceCalculator: ExperienceCalculator) {
 
     vscode.workspace.onDidChangeTextDocument((event) => {
 	
-		let toUpdate = languageLevels.find(
-			(languageLevel) => languageLevel.getLanguageId() === event.document.languageId);
+		let toUpdate = languageLevels.getLanguageLevel(event.document.languageId);
 
 		if (toUpdate === undefined) {
 			toUpdate = new LanguageLevel(event.document.languageId);
-			languageLevels.push(toUpdate);
+			languageLevels.addLanguageLevel(toUpdate);
 		}
 
 		const documentChange: TextDocumentChange = {
@@ -48,7 +44,7 @@ function registerOnDidChangeTextDocument(
 		var experienceToGain = experienceCalculator.calculate(documentChange);
 
 		var hasLeveledUp = toUpdate.gainExp(experienceToGain);
-		overallLevel.gainExp(experienceToGain);
+		languageLevels.getLanguageLevel('overall')!.gainExp(experienceToGain);
 
 		if (hasLeveledUp) {
 			showLanguageLevelUpNotification(toUpdate);
@@ -58,7 +54,7 @@ function registerOnDidChangeTextDocument(
 
 function registerOnDidSaveTextDocument(
 	context: vscode.ExtensionContext, 
-	languageLevels: LanguageLevel[],
+	languageLevels: LanguageLevels,
 	treeViewDataRefreshCallback: () => void) {
 		
 	vscode.workspace.onDidSaveTextDocument(() => {
