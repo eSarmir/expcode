@@ -9,11 +9,15 @@ export function registerEvents(
 	context: vscode.ExtensionContext,
 	languageLevels: LanguageLevel[],
 	experienceCalculator: ExperienceCalculator,
-	treeViewDataRefreshCallback: () => void
-	) {
-    registerOnDidChangeTextDocument(
+	treeViewDataRefreshCallback: () => void) {
+
+	const overallLevel = languageLevels.find((languageLevel) => languageLevel.getLanguageId() === 'overall')!;
+
+	registerOnDidChangeTextDocument(	
+		overallLevel,
 		languageLevels,
 		experienceCalculator);
+
 	registerOnDidSaveTextDocument(
 		context, 
 		languageLevels, 
@@ -22,6 +26,7 @@ export function registerEvents(
 }
 
 function registerOnDidChangeTextDocument(
+	overallLevel: LanguageLevel,
 	languageLevels: LanguageLevel[],
 	experienceCalculator: ExperienceCalculator) {
 
@@ -43,6 +48,7 @@ function registerOnDidChangeTextDocument(
 		var experienceToGain = experienceCalculator.calculate(documentChange);
 
 		var hasLeveledUp = toUpdate.gainExp(experienceToGain);
+		overallLevel.gainExp(experienceToGain);
 
 		if (hasLeveledUp) {
 			showLanguageLevelUpNotification(toUpdate);
