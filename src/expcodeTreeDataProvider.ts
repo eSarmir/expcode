@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { LanguageLevel } from './languageLevel';
 import path from 'path';
 import * as fs from 'fs';
+import { LanguageLevels } from './languageLevels';
 
 export class ExpcodeTreeDataProvider implements vscode.TreeDataProvider<vscode.TreeItem> {
 
@@ -9,9 +10,9 @@ export class ExpcodeTreeDataProvider implements vscode.TreeDataProvider<vscode.T
         = new vscode.EventEmitter<LanguageTreeItem | undefined>();
     readonly onDidChangeTreeData: vscode.Event<LanguageTreeItem | undefined> = this._onDidChangeTreeData.event;
 
-    private readonly LanguageLevels: LanguageLevel[];
+    private readonly LanguageLevels: LanguageLevels;
 
-    constructor(languageLevels: LanguageLevel[]) {
+    constructor(languageLevels: LanguageLevels) {
         this.LanguageLevels = languageLevels;
     }
 
@@ -24,7 +25,7 @@ export class ExpcodeTreeDataProvider implements vscode.TreeDataProvider<vscode.T
             return Promise.resolve(element.children);
         } else {
             return Promise.resolve(
-                this.LanguageLevels.map(level => {
+                this.LanguageLevels.getLanguageLevels().map(level => {
                     return new LanguageTreeItem(
                         level,
                         vscode.TreeItemCollapsibleState.Expanded

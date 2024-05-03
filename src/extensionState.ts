@@ -1,8 +1,9 @@
 import * as vscode from 'vscode';
 import { LanguageLevel, StorableLanguageLevel } from './languageLevel';
 import { LanguageLevelsGlobalStateId } from './constants'; 
+import { LanguageLevels } from './languageLevels';
 
-export function getLanguageLevels(context: vscode.ExtensionContext): LanguageLevel[] {
+export function getLanguageLevels(context: vscode.ExtensionContext): LanguageLevels {
     var storableLanguageLevels = context.globalState.get<StorableLanguageLevel[]>(
         LanguageLevelsGlobalStateId, [] as StorableLanguageLevel[]
     );
@@ -15,20 +16,12 @@ export function getLanguageLevels(context: vscode.ExtensionContext): LanguageLev
             );
     });
 
-    var overallLanguageLevel = languageLevels.find((languageLevel) => languageLevel.getLanguageId() === 'overall');
-
-    if (overallLanguageLevel === undefined) 
-    {
-        overallLanguageLevel = new LanguageLevel('overall');
-        languageLevels.unshift(overallLanguageLevel);
-    }
-
-    return languageLevels;
+    return new LanguageLevels(languageLevels);
 }
 
-export function updateLanguageLevels(context: vscode.ExtensionContext, languageLevels: LanguageLevel[]) {
+export function updateLanguageLevels(context: vscode.ExtensionContext, languageLevels: LanguageLevels) {
     
-    let languageLevelsToStore = languageLevels.map((languageLevel) => {
+    let languageLevelsToStore = languageLevels.getLanguageLevels().map((languageLevel) => {
         return {
             languageId: languageLevel.getLanguageId(),
             level: languageLevel.getLevel(),
@@ -39,6 +32,6 @@ export function updateLanguageLevels(context: vscode.ExtensionContext, languageL
     context.globalState.update(LanguageLevelsGlobalStateId, languageLevelsToStore);
 }
 
-export function resetLanguageLevels(context: vscode.ExtensionContext) {
+export function deleteStoredLanguageLevels(context: vscode.ExtensionContext) {
     context.globalState.update(LanguageLevelsGlobalStateId, undefined);
 }
