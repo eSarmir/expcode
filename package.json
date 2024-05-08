@@ -2,7 +2,7 @@
   "name": "expcode",
   "displayName": "Expcode",
   "description": "Level up with your coding.",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "engines": {
     "vscode": "^1.86.0"
   },
@@ -72,5 +72,9 @@
     "webpack-cli": "^5.1.4",
     "@vscode/test-cli": "^0.0.4",
     "@vscode/test-electron": "^2.3.9"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eSarmir/expcode.git"
   }
 }
