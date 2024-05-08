@@ -4,7 +4,7 @@
   "displayName": "Expcode",
   "description": "Simple gamification VS Code extension",
   "icon": "resources/expcode_icon_512_x_512.png",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "engines": {
     "vscode": "^1.86.0"
   },
