@@ -25,7 +25,7 @@
         {
           "id": "expcode-view-container",
           "title": "Expcode",
-          "icon": "resources/expcode_icon.svg"
+          "icon": "resources/expcode_icon_128_x_128.png"
         }
       ]
     },
