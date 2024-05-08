@@ -2,7 +2,8 @@
   "publisher": "eSarmir",
   "name": "expcode",
   "displayName": "Expcode",
-  "description": "Level up with your coding.",
+  "description": "Simple gamification VS Code extension",
+  "icon": "resources/expcode_icon_512_x_512.png",
   "version": "1.0.0",
   "engines": {
     "vscode": "^1.86.0"
