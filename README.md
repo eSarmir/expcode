@@ -2,6 +2,12 @@
 
 A simple gamification extension for VS Code.
 
+## Usage
+
+You gain experience just by simply coding in your prefered programming language. The extension supports all languages supported by VS code itself. 
+
+> Experience is added after you save the contents of the file.
+
 ## Features
 
 See the progress of your language levels along with your overall level in expcode view
@@ -27,6 +33,6 @@ Disable level up notifications.
 ![image](https://github.com/eSarmir/expcode/assets/51176669/d5961e7f-3a77-4c4f-a362-0f4fb4084971)
 
 
-## Icons
+## Icons used
 
-link to icons
+[Material Icon Theme](https://github.com/PKief/vscode-material-icon-theme)
