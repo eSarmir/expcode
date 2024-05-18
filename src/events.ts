@@ -29,6 +29,10 @@ function registerOnDidChangeTextDocument(
 
     vscode.workspace.onDidChangeTextDocument((event) => {
 	
+		if (shouldIgnoreDocumentChange(event.document)) {
+			return;
+		}
+
 		let toUpdate = languageLevels.getLanguageLevel(event.document.languageId);
 
 		if (toUpdate === undefined) {
@@ -50,6 +54,17 @@ function registerOnDidChangeTextDocument(
 			showLanguageLevelUpNotification(toUpdate);
 		}
 	});
+}
+
+/**
+ * Check if document change comes from a file. 
+ * Only changes in files should be considered when calculating experience.
+ * 
+ * @param document 
+ * @returns True if the change should be ignored, false otherwise.
+ */
+function shouldIgnoreDocumentChange(document: vscode.TextDocument){
+	return document.uri.scheme !== 'file';
 }
 
 function registerOnDidSaveTextDocument(
