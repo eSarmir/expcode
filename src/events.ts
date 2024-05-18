@@ -67,7 +67,6 @@ function shouldIgnoreDocumentChange(document: vscode.TextDocument){
 	return document.uri.scheme !== 'file';
 }
 
-
 function registerOnDidSaveTextDocument(
 	context: vscode.ExtensionContext, 
 	languageLevels: LanguageLevels,
