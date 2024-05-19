@@ -20,6 +20,15 @@
       {
         "command": "expcode.resetProgress",
         "title": "Expcode: Reset progress"
+      },
+      {
+        "command": "expcode.removeLanguage",
+        "title": "Remove language",
+        "when": "false",
+        "icon": {
+          "light": "resources/delete-light-theme.svg",
+          "dark": "resources/delete-dark-theme.svg"
+        }
       }
     ],
     "viewsContainers": {
@@ -36,6 +45,15 @@
         {
           "id": "expcode-view-container",
           "name": "Expcode"
+        }
+      ]
+    },
+    "menus": {
+      "view/item/context": [
+        {
+          "command": "expcode.removeLanguage",
+          "group": "inline",
+          "when": "view == expcode-view-container && viewItem == language"
         }
       ]
     },

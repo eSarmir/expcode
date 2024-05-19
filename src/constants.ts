@@ -5,8 +5,7 @@ export const LanguageLevelsGlobalStateId = `expcode-language-levels`;
 export const ExpcodeViewContainerId = 'expcode-view-container';
 
 // Commands
-export const ShowLanguageOfActiveEditorCommand = 'expcode.showLanguageOfActiveEditor';
-export const ShowLevelForLanguageCommand = 'expcode.showLevelForLanguage';
 export const ResetProgressCommand = 'expcode.resetProgress';
+export const RemoveLanguageCommand = 'expcode.removeLanguage';
 
 export const ExpToLevelUp = 256;

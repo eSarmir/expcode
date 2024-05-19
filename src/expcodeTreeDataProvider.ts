@@ -63,6 +63,10 @@ class LanguageTreeItem extends vscode.TreeItem {
             light: iconPath,
             dark: iconPath
         };
+
+        if (LanguageLevel.getLanguageId() !== 'overall') {
+            this.contextValue = 'language';
+        }
     }
 
     populateChildrenElements(): vscode.TreeItem[] {
