@@ -14,10 +14,13 @@ See the progress of your language levels along with your overall level in expcod
 
 ![image](https://github.com/eSarmir/expcode/assets/51176669/85ad0284-7df5-4d15-bff7-ce73f7ed8671)
 
+Remove progress of unwanted languages
+
+![image](https://github.com/eSarmir/expcode/assets/51176669/bed7c258-c7c5-4822-8fc0-99b119f5464b)
+
 The extension shows notifications when you level up your languages.
 
 ![image](https://github.com/eSarmir/expcode/assets/51176669/8ae0c4e7-79c9-4c7b-9a82-9d3f0cbc4677)
-
 
 ## Extension commands
 
