@@ -31,6 +31,11 @@ export class LanguageLevels {
         this.languageLevels[index] = languageLevel;
     }
 
+    public deleteLanguageLevel(languageId: string) {
+        const index = this.languageLevels.findIndex((level) => level.getLanguageId() === languageId);
+        this.languageLevels.splice(index, 1);
+    }
+
     public resetLanguageLevels() {
         this.languageLevels = [];
         this.addOverallLevel();
