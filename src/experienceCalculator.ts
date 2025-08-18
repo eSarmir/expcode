@@ -2,10 +2,10 @@ import { TextDocumentChange, ComboStack } from "./textDocumentChange";
 
 export class ExperienceCalculator {
     private readonly textDocumentChangeStack: ComboStack = new ComboStack();
-    private readonly maxTimeBetweenChangesMs: number = 3000;
+    private readonly maxTimeBetweenChangesMs: number = 5000;
 
     private readonly singleCharacterExperience: number = 1;
-    private readonly MaxMultiCharacterExperience: number = 20;
+    private readonly MaxMultiCharacterExperience: number = 25;
 
     public calculate(documentChange: TextDocumentChange): number {
 
